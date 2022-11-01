@@ -8,8 +8,8 @@ app.use(cors())
 app.use(express.json())
 //app.use(morgan("tiny"));
 app.use(morgan(
-      ":method :url :status :res[content-length] - :response-time ms :custom"
-    ));
+    ":method :url :status :res[content-length] - :response-time ms :custom"
+));
 
 let persons = [
     {
@@ -36,8 +36,11 @@ let persons = [
 
 morgan.token("custom", (request, response) => {
     return "POST" === request.method ? JSON.stringify(request.body) : " ";
-  });
-  
+});
+
+app.get('/', (req, res) => {
+    res.sendFile('index.html', { root: path.join(__dirname, 'build') });
+})
 
 app.get("/info", (request, response) => {
     const numPeople = persons.reduce((counter, person) => {
@@ -108,3 +111,5 @@ const PORT = 3001
 app.listen(PORT, () => {
     console.log(`Server running on port ${PORT}`)
 })
+
+module.exports = app
